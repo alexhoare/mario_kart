@@ -1,16 +1,14 @@
-import math
-
 import pygame
+import math
 from OpenGL.GL import *
 
 
-class Image2D:
-    def __init__(self, texture_path, camera, offsetFromCamera=None, attachedToCamera=False):
+class Track:
+    def __init__(self, texture_path, coordinates, camera):
         self.texture_path = texture_path
-        self.textureID = self.loadTexture()
+        self.coordinates = coordinates
         self.camera = camera
-        self.attachedToCamera = attachedToCamera
-        self.offsetFromCamera = offsetFromCamera
+        self.textureID = self.loadTexture()
 
     def loadTexture(self):
         textureSurface = pygame.image.load(self.texture_path)
@@ -33,8 +31,6 @@ class Image2D:
         return texid
 
     def draw(self):
-        self.coordinates = self.calculateCoordinates(self.camera)
-
         glEnable(GL_TEXTURE_2D)
         glColor3f(1, 1, 1)
         glBindTexture(GL_TEXTURE_2D, self.textureID)
@@ -54,39 +50,3 @@ class Image2D:
         glVertex3f(self.coordinates[3][0], self.coordinates[3][1], self.coordinates[3][2])
 
         glEnd()
-
-    def calculateCoordinates(self, camera):
-        pos = [camera.position[0], camera.position[1], camera.position[2]]
-        yaw = camera.yaw
-
-        distance = 2
-
-        dx = math.sin(math.radians(yaw)) * distance
-        dz = -math.cos(math.radians(yaw)) * distance
-
-        pos[0] += dx
-        pos[2] += dz
-
-        yaw = 90 - yaw
-        dx2 = math.sin(math.radians(yaw))
-        dz2 = math.cos(math.radians(yaw))
-
-        coords = [[-dx2, -2.0, -dz2], [dx2, -2.0, dz2], [dx2, -1.0, dz2], [-dx2, -1.0, -dz2]]
-
-        coords = [[coords[0][0] + pos[0], coords[0][1] + pos[1], coords[0][2] + pos[2]],
-                  [coords[1][0] + pos[0], coords[1][1] + pos[1], coords[1][2] + pos[2]],
-                  [coords[2][0] + pos[0], coords[2][1] + pos[1], coords[2][2] + pos[2]],
-                  [coords[3][0] + pos[0], coords[3][1] + pos[1], coords[3][2] + pos[2]]]
-
-        xAverage = 0
-        yAverage = 0
-        zAverage = 0
-        for coord in coords:
-            xAverage += coord[0]
-            yAverage += coord[1]
-            zAverage += coord[2]
-        xAverage /= len(coords)
-        yAverage /= len(coords)
-        zAverage /= len(coords)
-
-        return coords

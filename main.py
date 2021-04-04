@@ -17,6 +17,7 @@ from camera import Camera
 from image2d import Image2D
 from player import Player
 from game import Game
+from track import Track
 
 vertices = (
         (1, 1, -1),
@@ -67,8 +68,8 @@ def main():
     player = Player([0, 0, 0], [0, 0, 0])
     camera.rotate(player, 0, 1, 20)
 
-    coords = [[-200.0, -1.0, 200.0], [200.0, -1.0, 200.0], [200.0, -1.0, -200.0], [-200.0, -1.0, -200.0]]
-    track = Image2D('track.png', coords)
+    trackCoordinates = [[-200.0, -1.0, 200.0], [200.0, -1.0, 200.0], [200.0, -1.0, -200.0], [-200.0, -1.0, -200.0]]
+    track = Track('track.png', trackCoordinates, camera)
 
     game = Game(camera, player, track)
 
@@ -86,7 +87,7 @@ def main():
         glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        game.gameLoop(display, displayDimensions)
+        game.gameLoop()
 
         pygame.display.flip()
         
