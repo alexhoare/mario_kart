@@ -69,27 +69,26 @@ def main():
     camera.rotate(player, 0, 1, 20)
 
     trackCoordinates = [[-200.0, -1.0, 200.0], [200.0, -1.0, 200.0], [200.0, -1.0, -200.0], [-200.0, -1.0, -200.0]]
-    track = Track('track.png', trackCoordinates, camera)
+    track = Track('assets/track.png', trackCoordinates, camera)
 
     game = Game(camera, player, track)
 
-    # track = Track('track.png')
-    # coords = [[-1.0, -1.0, 1.0], [1.0, -1.0, 1.0], [1.0, -1.0, -1.0], [-1.0, -1.0, -1.0]]
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            # quit if app is closed or "q" is pressed
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_q):
                 pygame.quit()
                 quit()
-            
-                
-       # glRotatef(1, 3, 1, 1)
-        glColorMask(True, True, True, True);
-        glClearColor(0, 0, 0, 0);
-        glClear(GL_COLOR_BUFFER_BIT);
+
+        # clear the screen
+        glColorMask(True, True, True, True)
+        glClearColor(0, 0, 0, 0)
+        glClear(GL_COLOR_BUFFER_BIT)
 
         game.gameLoop()
 
+        # update the screen
         pygame.display.flip()
-        
+
         pygame.time.wait(10)
 main()

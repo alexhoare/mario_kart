@@ -19,6 +19,8 @@ class Image2D:
         height = textureSurface.get_height()
 
         glEnable(GL_TEXTURE_2D)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         texid = glGenTextures(1)
 
         glBindTexture(GL_TEXTURE_2D, texid)
@@ -29,6 +31,7 @@ class Image2D:
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 
         return texid
 
@@ -36,10 +39,17 @@ class Image2D:
         self.coordinates = self.calculateCoordinates(self.camera)
 
         glEnable(GL_TEXTURE_2D)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        # glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+
         glColor3f(1, 1, 1)
         glBindTexture(GL_TEXTURE_2D, self.textureID)
 
         glBegin(GL_QUADS)
+        #
+        # glEnable(GL_BLEND)
+        # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
         glTexCoord2f(0.0, 0.0)
         glVertex3f(self.coordinates[0][0], self.coordinates[0][1], self.coordinates[0][2])
@@ -54,6 +64,9 @@ class Image2D:
         glVertex3f(self.coordinates[3][0], self.coordinates[3][1], self.coordinates[3][2])
 
         glEnd()
+
+        glDisable(GL_TEXTURE_2D)
+        glDisable(GL_BLEND)
 
     def calculateCoordinates(self, camera):
         pos = [camera.position[0], camera.position[1], camera.position[2]]

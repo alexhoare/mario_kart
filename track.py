@@ -1,5 +1,4 @@
 import pygame
-import math
 from OpenGL.GL import *
 
 

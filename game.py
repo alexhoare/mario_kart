@@ -37,6 +37,7 @@ class Game:
         if pressed[pygame.K_k]:
             self.camera.rotate(self.player, 0, 1, rotate_constant)
 
+
     def gameLoop(self):
         self.handleInput()
 
