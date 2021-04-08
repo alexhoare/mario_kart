@@ -19,41 +19,6 @@ from player import Player
 from game import Game
 from track import Track
 
-vertices = (
-        (1, 1, -1),
-        (1, -1, -1),
-        (-1, -1, -1),
-        (-1, 1, -1),        
-        (1, 1, 1),
-        (1, -1, 1),
-        (-1, -1, 1),
-        (-1, 1, 1)
-        )
-        
-edges = (
-        (0, 1),
-        (1, 2),
-        (2, 3),
-        (3, 0),
-        (4, 5),
-        (5, 6),
-        (6, 7),
-        (7, 4),
-        (0, 4),
-        (1, 5),
-        (2, 6),
-        (3, 7),
-        )
-
-
-def Cube(vertices, edges):
-    glBegin(GL_LINES)
-    for edge in edges:
-        for index in edge:
-            glVertex3fv(vertices[index])
-    glEnd()
-    
-
 
 def main():
     pygame.init()
@@ -82,7 +47,7 @@ def main():
 
         # clear the screen
         glColorMask(True, True, True, True)
-        glClearColor(0, 0, 0, 0)
+        glClearColor(0.53, 0.81, 0.92, 1.0)
         glClear(GL_COLOR_BUFFER_BIT)
 
         game.gameLoop()

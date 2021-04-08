@@ -30,27 +30,40 @@ class Player(object):
     def printPosition(self):
         print(self.camera.position[0], self.camera.position[1], self.camera.position[2])
 
-    def move_forward(self, distance, maxVelocity):
-        dx = -math.sin(math.radians(self.camera.yaw)) * distance
-        dz = math.cos(math.radians(self.camera.yaw)) * distance
+    def move_forward(self, distance, maxVelocity, trackDeceleration):
+        ddx = -math.sin(math.radians(self.camera.yaw)) * distance
+        ddz = math.cos(math.radians(self.camera.yaw)) * distance
 
-        self.acceleration = [dx, 0, dz]
-        self.velocity = [self.velocity[0] + dx, self.velocity[1], self.velocity[2] + dz]
+        if trackDeceleration == 0:
+            # self.velocity = [-ddx, 0, -ddz]
+            if (self.velocity == [0, 0, 0]):
+                self.velocity = [ddx, 0, ddz]
+            else:
+                self.velocity = [0, 0, 0]
+
+        #     self.acceleration = [0, 0, 0]
+            self.camera.move_forward(self.velocity)
+            return
+
+        self.acceleration = [ddx, 0, ddz]
+        self.velocity = [trackDeceleration * (self.velocity[0] + ddx), trackDeceleration * (self.velocity[1]), trackDeceleration * (self.velocity[2] + ddz)]
+
         totalVelocity = math.sqrt(self.velocity[0]**2 + self.velocity[2]**2)
 
         if totalVelocity > maxVelocity:
-            dx = -math.sin(math.radians(self.camera.yaw)) * maxVelocity
-            dz = math.cos(math.radians(self.camera.yaw)) * maxVelocity
+            dx = -math.sin(math.radians(self.camera.yaw)) * maxVelocity * trackDeceleration
+            dz = math.cos(math.radians(self.camera.yaw)) * maxVelocity * trackDeceleration
 
             if (self.goingBackwards):
                 self.velocity = [-dx, 0, -dz]
             else:
                 self.velocity = [dx, 0, dz]
 
+
         self.camera.move_forward(self.velocity)
 
 
-    def move(self, maxVelocity):
+    def move(self, maxVelocity, trackDeceleration):
         self.velocity[0] += self.acceleration[0]
         self.velocity[2] += self.acceleration[2]
 

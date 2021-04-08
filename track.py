@@ -11,7 +11,7 @@ class Track:
         self.textureID = self.loadTexture()
         self.trackWidth = abs(coordinates[2][0] - coordinates[0][0])
         self.trackHeight = abs(coordinates[2][2] - coordinates[0][2])
-        self.image = Image.open("assets/accelerationMap.png").convert("RGB")
+        self.image = Image.open("assets/accelerationMap2.png").convert("RGB")
         self.imageWidth, self.imageHeight = self.image.size;
 
 
@@ -67,3 +67,10 @@ class Track:
         color = pixels[row, column]
 
         return color
+
+    def colorToDeceleration(self, color):
+        if color[0] > 200 and color[1] < 200 and color[2] < 200:
+            return 0
+        if color[2] > 200 and color[0] < 200 and color[1] < 200:
+            return 0.95
+        return 0.99
