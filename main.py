@@ -65,8 +65,8 @@ def main():
 
     camera = Camera([-140, 2, 10], 0, 0)
 
-    player = Player([0, 0, 0], [0, 0, 0])
-    camera.rotate(player, 0, 1, 20)
+    player = Player([0, 0, 0], [0, 0, 0], camera)
+    player.rotate(20, 1, 0)
 
     trackCoordinates = [[-200.0, -1.0, 200.0], [200.0, -1.0, 200.0], [200.0, -1.0, -200.0], [-200.0, -1.0, -200.0]]
     track = Track('assets/track.png', trackCoordinates, camera)

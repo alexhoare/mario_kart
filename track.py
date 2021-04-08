@@ -1,5 +1,6 @@
 import pygame
 from OpenGL.GL import *
+from PIL import Image
 
 
 class Track:
@@ -8,6 +9,11 @@ class Track:
         self.coordinates = coordinates
         self.camera = camera
         self.textureID = self.loadTexture()
+        self.trackWidth = abs(coordinates[2][0] - coordinates[0][0])
+        self.trackHeight = abs(coordinates[2][2] - coordinates[0][2])
+        self.image = Image.open("assets/accelerationMap.png").convert("RGB")
+        self.imageWidth, self.imageHeight = self.image.size;
+
 
     def loadTexture(self):
         textureSurface = pygame.image.load(self.texture_path)
@@ -49,3 +55,15 @@ class Track:
         glVertex3f(self.coordinates[3][0], self.coordinates[3][1], self.coordinates[3][2])
 
         glEnd()
+
+    def positionToPixel(self, x, z):
+        pixels = self.image.load()
+
+        widthScale = self.imageWidth / self.trackWidth
+        heightScale = self.imageHeight / self.trackHeight
+        row = (x + (self.trackWidth / 2)) * heightScale
+        column = (z + (self.trackHeight / 2)) * widthScale
+
+        color = pixels[row, column]
+
+        return color

@@ -6,13 +6,15 @@ from image2d import Image2D
 
 
 class Player(object):
-    def __init__(self, velocity, acceleration):
+    def __init__(self, velocity, acceleration, camera):
         self.acceleration = acceleration
         self.velocity = velocity
         # self.image = Image2D('player.png', [[]], camera)
         self.turningRight = False
         self.turningLeft = False
         self.goingBackwards = False
+
+        self.camera = camera
 
     def draw(self, camera):
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -25,5 +27,46 @@ class Player(object):
 
         self.image.draw()
 
+    def printPosition(self):
+        print(self.camera.position[0], self.camera.position[1], self.camera.position[2])
+
+    def move_forward(self, distance, maxVelocity):
+        dx = -math.sin(math.radians(self.camera.yaw)) * distance
+        dz = math.cos(math.radians(self.camera.yaw)) * distance
+
+        self.acceleration = [dx, 0, dz]
+        self.velocity = [self.velocity[0] + dx, self.velocity[1], self.velocity[2] + dz]
+        totalVelocity = math.sqrt(self.velocity[0]**2 + self.velocity[2]**2)
+
+        if totalVelocity > maxVelocity:
+            dx = -math.sin(math.radians(self.camera.yaw)) * maxVelocity
+            dz = math.cos(math.radians(self.camera.yaw)) * maxVelocity
+
+            if (self.goingBackwards):
+                self.velocity = [-dx, 0, -dz]
+            else:
+                self.velocity = [dx, 0, dz]
+
+        self.camera.move_forward(self.velocity)
 
 
+    def move(self, maxVelocity):
+        self.velocity[0] += self.acceleration[0]
+        self.velocity[2] += self.acceleration[2]
+
+        self.camera.move(self.velocity)
+
+    def rotate(self, scaling_constant, dpitch, dyaw):
+        self.camera.yaw += dyaw * scaling_constant
+        self.camera.pitch += dpitch * scaling_constant
+        self.camera.yaw = self.camera.yaw % 360
+        self.camera.pitch = self.camera.pitch % 360
+
+        dx = math.cos(math.radians(dyaw * scaling_constant)) * self.velocity[0] - math.sin(
+            math.radians(dyaw * scaling_constant)) * self.velocity[2]
+        dz = math.sin(math.radians(dyaw * scaling_constant)) * self.velocity[0] + math.cos(
+            math.radians(dyaw * scaling_constant)) * self.velocity[2]
+
+        self.velocity = [dx, 0, dz]
+
+        self.camera.rotate(scaling_constant, dpitch, dyaw, 0)
