@@ -9,7 +9,6 @@ class Player(object):
     def __init__(self, velocity, acceleration, camera):
         self.acceleration = acceleration
         self.velocity = velocity
-        # self.image = Image2D('player.png', [[]], camera)
         self.turningRight = False
         self.turningLeft = False
         self.goingBackwards = False
@@ -35,13 +34,11 @@ class Player(object):
         ddz = math.cos(math.radians(self.camera.yaw)) * distance
 
         if trackDeceleration == 0:
-            # self.velocity = [-ddx, 0, -ddz]
             if (self.velocity == [0, 0, 0]):
                 self.velocity = [ddx, 0, ddz]
             else:
                 self.velocity = [0, 0, 0]
 
-        #     self.acceleration = [0, 0, 0]
             self.camera.move_forward(self.velocity)
             return
 

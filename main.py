@@ -8,12 +8,8 @@ from OpenGL.GLUT import *
 from PIL import Image
 from PIL import ImageOps
 
-# uncomment if on school computer
-# import os
-# os.chdir("C:/Users/ahoare2/Downloads/Programming/Semester Project")
 
 from camera import Camera
-# from track import Track
 from image2d import Image2D
 from player import Player
 from game import Game
@@ -22,7 +18,7 @@ from track import Track
 
 def main():
     pygame.init()
-    displayDimensions = (1920, 1080)
+    displayDimensions = (1280, 720)
     
     display = pygame.display.set_mode(displayDimensions, DOUBLEBUF|OPENGL)
     

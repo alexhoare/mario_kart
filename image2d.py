@@ -18,7 +18,6 @@ class Image2D:
         width = textureSurface.get_width()
         height = textureSurface.get_height()
 
-        # glEnable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glEnable(GL_BLEND)
         texid = glGenTextures(1)
@@ -38,10 +37,8 @@ class Image2D:
     def draw(self):
         self.coordinates = self.calculateCoordinates(self.camera)
 
-        # glEnable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glEnable(GL_BLEND)
-        # glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 
         glColor3f(1, 1, 1)
         glBindTexture(GL_TEXTURE_2D, self.textureID)

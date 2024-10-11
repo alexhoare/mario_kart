@@ -51,15 +51,9 @@ class Game:
 
         x = self.camera.position[0]
         z = self.camera.position[2]
-        # x = self.camera.position[0] + self.player.velocity[0] * 2
-        # z = self.camera.position[2] + self.player.velocity[2] * 2
-        # if (self.player.goingBackwards):
-        #     x = -x
-        #     z = -z
 
         color = self.track.positionToPixel(x, z)
         self.trackDeceleration = self.track.colorToDeceleration(color)
-        # print(self.trackDeceleration)
 
     def drawPlayer(self):
         self.player.draw(self.camera)
